@@ -7,19 +7,38 @@
   justify-content: center;
 }
 
-#main_number {
+#container_main_window {
   height: 50px;
   width: 200px;
   padding: 5px;
-  font-size: 25px;
   display: flex;
   justify-content: right;
   align-items: center;
-  border: 2px solid rgba(0, 0, 0, 0.6);
-  margin-bottom: 4px;
+  border: 2px solid rgba(0, 0, 0, 0.8);
+  margin-bottom: 10px;
 }
 
-.button1 {
-  height: 40px;
-  width: 40px;
+#container_buttons {
+  width: 200px;
+  display: flex;
+  flex-direction: row;
+}
+
+#container_number_buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-right: 5px;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.main_window_items {
+  font-size: 25px;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+.buttons {
+  height: 50px;
+  width: 50px;
+  font-size: 20px;
 }
