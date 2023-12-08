@@ -9,9 +9,15 @@
   <body>
     <div id="container_all">
       <div id="container_main_window">
-        <div id="main_number" class="main_window_items"></div>
-        <div id="operator" class="main_window_items"></div>
-        <div id="operator_number" class="main_window_items"></div>
+        <div id="container_answer">
+          <div id="answer">ans =</div>
+        </div>
+        <div id="container_main_window_items">
+          <div id="main_number" class="main_window_items">0</div>
+          <div id="operator" class="main_window_items"></div>
+          <div id="second_number" class="main_window_items"></div>
+          <button id="equal_button">=</button>
+        </div>
       </div>
       <div id="container_buttons">
         <div id="container_number_buttons">
@@ -29,7 +35,10 @@
           <button id="button_(-)" class="buttons">(-)</button>
         </div>
         <div id="container_operation_buttons">
-          <button id="plus_button" class="buttons">+</button>
+          <button id="plus_button" class="operator_buttons">+</button>
+          <button id="minus_button" class="operator_buttons">-</button>
+          <button id="multiply_button" class="operator_buttons">*</button>
+          <button id="divide_button" class="operator_buttons">/</button>
         </div>
       </div>
     </div>
