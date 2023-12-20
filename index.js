@@ -1,106 +1,141 @@
 let main_number = document.getElementById("main_number");
-let operator = document.getElementById("operator");
-let second_number = document.getElementById("second_number");
 let answer = document.getElementById("answer");
 const buttons = document.querySelectorAll(".buttons");
 const operator_buttons = document.querySelectorAll(".operator_buttons");
 const equal_button = document.getElementById("equal_button");
 
-let num1 = "";
-let num2 = "";
+let nums_arr = new Array();
+let operators_arr = new Array();
+nums_arr.push("");
 let ans = "";
-let operator_var = "";
-let second_operation = false;
-let reset_num1 = false;
+let operation = false;
+let reset_ans = false;
 
-equal_button.addEventListener("click", function (event) {
-  let num1_parse = Number(num1);
-  let num2_parse = Number(num2);
-  let doOperation = {
-    "+": function (x, y) {
-      return x + y;
-    },
-    "-": function (x, y) {
-      return x - y;
-    },
-    "*": function (x, y) {
-      return x * y;
-    },
-    "/": function (x, y) {
-      return x / y;
-    },
-  };
-  answer.innerHTML = num1 + " " + operator_var + " " + num2 + " =";
-  num1 = doOperation[operator_var](num1_parse, num2_parse);
-  num1 = num1.toString();
-  ans = num1;
-  operator_var = "";
-  num2 = "";
-  main_number.innerHTML = num1;
-  operator.innerHTML = "";
-  second_number.innerHTML = "";
-  second_operation = false;
-  reset_num1 = true;
-});
+let doOperation = {
+  "+": function (x, y) {
+    return x + y;
+  },
+  "-": function (x, y) {
+    return x - y;
+  },
+  "*": function (x, y) {
+    return x * y;
+  },
+  "/": function (x, y) {
+    return x / y;
+  },
+};
 
 buttons.forEach((button) => {
   button.addEventListener("click", function (event) {
+    if (reset_ans) {
+      main_number.innerHTML = "";
+      nums_arr = [""];
+      reset_ans = false;
+    }
     const buttonText = event.target.textContent;
-    if (!second_operation) {
-      if (reset_num1) {
-        num1 = "";
-        reset_num1 = false;
+    let n = nums_arr.length;
+    let temp_num = nums_arr[n - 1];
+    if (main_number.innerHTML == "0") {
+      switch (buttonText) {
+        case ".":
+          temp_num += buttonText;
+          main_number.innerHTML += buttonText;
+          break;
+        case "(-)":
+          temp_num = "-" + temp_num;
+          let sub = main_number.innerHTML;
+          main_number.innerHTML = "-";
+          break;
+        default:
+          temp_num += buttonText;
+          main_number.innerHTML = buttonText;
+          break;
       }
-      setNumDiv(1, buttonText);
     } else {
-      setNumDiv(2, buttonText);
+      switch (buttonText) {
+        case ".":
+          if (!temp_num.includes(".")) {
+            temp_num += buttonText;
+            main_number.innerHTML += buttonText;
+          }
+          break;
+        case "(-)":
+          if (!temp_num.includes("-")) {
+            temp_num = "-" + temp_num;
+            let sub = main_number.innerHTML;
+            main_number.innerHTML =
+              sub.substring(0, sub.length + 1 - temp_num.length) + temp_num;
+          }
+          break;
+        default:
+          temp_num += buttonText;
+          main_number.innerHTML += buttonText;
+          break;
+      }
+    }
+    nums_arr[n - 1] = temp_num;
+    operation = false;
+  });
+});
+
+operator_buttons.forEach((operator_button) => {
+  operator_button.addEventListener("click", function (event) {
+    if (reset_ans) {
+      reset_ans = false;
+    }
+    const operatorText = event.target.textContent;
+    let n = operators_arr.length;
+    if (!operation) {
+      operators_arr.push(operatorText);
+      main_number.innerHTML += operatorText;
+      nums_arr.push("");
+      operation = true;
     }
   });
 });
 
-function setNumDiv(x, buttonText) {
-  answer.innerHTML = "ans = " + ans + " ";
-  let temp_num = x == 1 ? num1 : num2;
-  switch (buttonText) {
-    case ".":
-      if (!temp_num.includes(".")) {
-        temp_num += ".";
-      }
-      break;
-    case "(-)":
-      if (!temp_num.includes("-")) {
-        if (temp_num == "") {
-          temp_num = "-";
+equal_button.addEventListener("click", function (event) {
+  if (!operation) {
+    let multDiv = true;
+    let count = 0;
+    while (operators_arr.length > 0) {
+      for (let j = 0; j < operators_arr.length; j++) {
+        if (multDiv) {
+          if (operators_arr[j] == "*" || operators_arr[j] == "/") {
+            nums_arr[j] = doOperation[operators_arr[j]](
+              Number(nums_arr[j]),
+              Number(nums_arr[j + 1])
+            );
+            nums_arr = nums_arr.slice(0, j + 1).concat(nums_arr.slice(j + 2));
+            operators_arr = operators_arr
+              .slice(0, j)
+              .concat(operators_arr.slice(j + 1));
+            j--;
+          }
+          if (j == operators_arr.length - 1) {
+            multDiv = false;
+          }
         } else {
-          temp_num = "-" + temp_num;
+          nums_arr[j] = doOperation[operators_arr[j]](
+            Number(nums_arr[j]),
+            Number(nums_arr[j + 1])
+          );
+          nums_arr = nums_arr.slice(0, j + 1).concat(nums_arr.slice(j + 2));
+          operators_arr = operators_arr
+            .slice(0, j)
+            .concat(operators_arr.slice(j + 1));
+          j--;
+          if (j >= operators_arr.length - 1) {
+            break;
+          }
         }
-      } else {
-        temp_num = temp_num.substring(1);
       }
-      break;
-    default:
-      if (temp_num == "") {
-        temp_num = buttonText;
-      } else {
-        temp_num += buttonText;
-      }
-      break;
+    }
+    nums_arr[0] = nums_arr[0].toString();
+    main_number.innerHTML = nums_arr[0];
+    ans = nums_arr[0];
+    answer.innerHTML = "ans = " + ans;
+    reset_ans = true;
   }
-  if (x == 1) {
-    num1 = temp_num;
-    main_number.innerHTML = num1;
-  } else {
-    num2 = temp_num;
-    second_number.innerHTML = num2;
-  }
-}
-
-operator_buttons.forEach((operator_button) => {
-  operator_button.addEventListener("click", function (event) {
-    answer.innerHTML = "ans = " + ans + " ";
-    const operatorText = event.target.textContent;
-    second_operation = true;
-    operator_var = operatorText;
-    operator.innerHTML = operator_var;
-  });
 });
