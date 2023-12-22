@@ -3,6 +3,8 @@ let answer = document.getElementById("answer");
 const buttons = document.querySelectorAll(".buttons");
 const operator_buttons = document.querySelectorAll(".operator_buttons");
 const equal_button = document.getElementById("equal_button");
+const clear_button = document.getElementById("clear_button");
+const backspace_button = document.getElementById("backspace_button");
 
 let nums_arr = new Array();
 let operators_arr = new Array();
@@ -100,6 +102,7 @@ equal_button.addEventListener("click", function (event) {
     let multDiv = true;
     let count = 0;
     while (operators_arr.length > 0) {
+      /*this while loop is probably redundant*/
       for (let j = 0; j < operators_arr.length; j++) {
         if (multDiv) {
           if (operators_arr[j] == "*" || operators_arr[j] == "/") {
@@ -137,5 +140,31 @@ equal_button.addEventListener("click", function (event) {
     ans = nums_arr[0];
     answer.innerHTML = "ans = " + ans;
     reset_ans = true;
+  }
+});
+
+clear_button.addEventListener("click", function (event) {
+  nums_arr = [];
+  operators_arr = [];
+  nums_arr.push("");
+  ans = "";
+  operation = false;
+  reset_ans = false;
+  main_number.innerHTML = 0;
+  answer.innerHTML = "ans = ";
+});
+
+backspace_button.addEventListener("click", function (event) {
+  if (operation) {
+    operation = false;
+    operators_arr.pop();
+    let sub = main_number.innerHTML;
+    main_number.innerHTML = sub.substring(0, sub.length - 1);
+  } else {
+    let n = nums_arr.length;
+    let temp = nums_arr[n - 1];
+    nums_arr[n - 1] = temp.substring(0, temp.length - 1);
+    let sub = main_number.innerHTML;
+    main_number.innerHTML = sub.substring(0, sub.length - 1);
   }
 });

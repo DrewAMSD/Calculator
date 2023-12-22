@@ -34,6 +34,7 @@
 }
 
 #container_buttons {
+  height: 200px;
   width: 200px;
   display: flex;
   flex-direction: row;
@@ -44,6 +45,10 @@
   grid-template-columns: repeat(3, 1fr);
   margin-right: 5px;
   background-color: rgba(0, 0, 0, 0.3);
+}
+
+#container_operation_buttons {
+  margin-right: 5px;
 }
 
 .main_window_items {
@@ -57,6 +62,7 @@
   width: 50px;
   font-size: 20px;
 }
+
 #equal_button {
   display: flex;
   align-items: center;
@@ -70,6 +76,17 @@
   height: 50px;
   width: 50px;
   font-size: 20px;
+}
+
+.other_buttons {
+  height: 50px;
+  width: 50px;
+  font-size: 20px;
+}
+
+.images {
+  height: auto;
+  width: 100%;
 }
 
 #answer {
