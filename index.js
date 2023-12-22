@@ -36,6 +36,11 @@ buttons.forEach((button) => {
       nums_arr = [""];
       reset_ans = false;
     }
+    if (main_number.innerHTML.slice(-3) == "ans") {
+      operators_arr.push("*");
+      main_number.innerHTML += "*";
+      nums_arr.push("");
+    }
     const buttonText = event.target.textContent;
     let n = nums_arr.length;
     let temp_num = nums_arr[n - 1];
@@ -175,6 +180,13 @@ backspace_button.addEventListener("click", function (event) {
 });
 
 ans_button.addEventListener("click", function (event) {
-  /*might need another boolean to make it so that when 
-  you use ans it is the only thing in that spot in the nums arr*/
+  if (operation) {
+    operation = false;
+    nums_arr[nums_arr.length - 1] = ans;
+    main_number.innerHTML += "ans";
+  } else {
+    operators_arr.push("*");
+    nums_arr.push(ans);
+    main_number.innerHTML += "*" + "ans";
+  }
 });
