@@ -5,6 +5,7 @@ const operator_buttons = document.querySelectorAll(".operator_buttons");
 const equal_button = document.getElementById("equal_button");
 const clear_button = document.getElementById("clear_button");
 const backspace_button = document.getElementById("backspace_button");
+const ans_button = document.getElementById("ans_button");
 
 let nums_arr = new Array();
 let operators_arr = new Array();
@@ -155,16 +156,25 @@ clear_button.addEventListener("click", function (event) {
 });
 
 backspace_button.addEventListener("click", function (event) {
-  if (operation) {
+  if (nums_arr[nums_arr.length - 1] == "") {
     operation = false;
     operators_arr.pop();
     let sub = main_number.innerHTML;
     main_number.innerHTML = sub.substring(0, sub.length - 1);
+    nums_arr.pop();
   } else {
     let n = nums_arr.length;
     let temp = nums_arr[n - 1];
     nums_arr[n - 1] = temp.substring(0, temp.length - 1);
     let sub = main_number.innerHTML;
     main_number.innerHTML = sub.substring(0, sub.length - 1);
+    if (nums_arr[n - 1] == "") {
+      operation = true;
+    }
   }
+});
+
+ans_button.addEventListener("click", function (event) {
+  /*might need another boolean to make it so that when 
+  you use ans it is the only thing in that spot in the nums arr*/
 });
