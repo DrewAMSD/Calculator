@@ -29,6 +29,12 @@ let doOperation = {
   },
 };
 
+function getCheck() {
+  let temp_num = nums_arr[nums_arr.length-1];
+  let last_char = temp_num.substring(temp_num.length-1, temp_num.length);
+  return (last_char === "-" || last_char === ".");
+}
+
 buttons.forEach((button) => {
   button.addEventListener("click", function (event) {
     if (reset_ans) {
@@ -94,7 +100,8 @@ operator_buttons.forEach((operator_button) => {
     }
     const operatorText = event.target.textContent;
     let n = operators_arr.length;
-    if (!operation) {
+    let check = getCheck();
+    if (!operation && !check) {
       operators_arr.push(operatorText);
       main_number.innerHTML += operatorText;
       nums_arr.push("");
@@ -104,7 +111,8 @@ operator_buttons.forEach((operator_button) => {
 });
 
 equal_button.addEventListener("click", function (event) {
-  if (!operation) {
+  let check = getCheck();
+  if (!operation && !check) {
     let multDiv = true;
     let count = 0;
     while (operators_arr.length > 0) {
@@ -161,17 +169,20 @@ clear_button.addEventListener("click", function (event) {
 });
 
 backspace_button.addEventListener("click", function (event) {
-  if (nums_arr[nums_arr.length - 1] == "") {
+  let sub = main_number.innerHTML;
+  if (sub.substring(sub.length-3, sub.length) === "ans") {
+    nums_arr[nums_arr.length-1] = "";
+    main_number.innerHTML = sub.substring(0, sub.length - 3);
+    operation = true;
+  } else if (nums_arr[nums_arr.length - 1] == "") {
     operation = false;
     operators_arr.pop();
-    let sub = main_number.innerHTML;
     main_number.innerHTML = sub.substring(0, sub.length - 1);
     nums_arr.pop();
   } else {
     let n = nums_arr.length;
     let temp = nums_arr[n - 1];
     nums_arr[n - 1] = temp.substring(0, temp.length - 1);
-    let sub = main_number.innerHTML;
     main_number.innerHTML = sub.substring(0, sub.length - 1);
     if (nums_arr[n - 1] == "") {
       operation = true;
@@ -185,8 +196,11 @@ ans_button.addEventListener("click", function (event) {
     nums_arr[nums_arr.length - 1] = ans;
     main_number.innerHTML += "ans";
   } else {
-    operators_arr.push("*");
-    nums_arr.push(ans);
-    main_number.innerHTML += "*" + "ans";
+    let check = getCheck();
+    if (!check) {
+      operators_arr.push("*");
+      nums_arr.push(ans);
+      main_number.innerHTML += "*" + "ans";
+    }
   }
 });
